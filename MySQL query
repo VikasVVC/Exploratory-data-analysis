@@ -1,0 +1,77 @@
+
+-- 1. Display the last 5 rows from data set
+select *from supermarket limit 5;
+
+-- 2. Display the last 5 rows from data set
+select *from supermarket order by 'Invoice ID' desc limit 5;
+
+-- 3. Display random 5 rows from the dataset.
+select *from supermarket order by rand() limit 5;
+
+-- 4. Display count,min, max, avg and std values for a column in the dataset
+select count(`gross income`),
+min(`gross income`),
+max(`gross income`),
+avg(`gross income`),
+std(`gross income`)
+from supermarket;
+
+-- 5. find the number of missing values 
+select count(*) from supermarket where 'Branch' is null;
+
+-- 6. count the number of occurences of each city 
+select `City`, count(`City`) from supermarket 
+group by `City`;
+
+-- 7.find the most frequently used method 
+
+select `payment`, count(`payment`) from supermarket 
+group by `payment`;
+
+-- 8. does the cost of goods sold affect the ratings that the customer provide?
+select round((`unit price`*`Quantity`),2) as cost , `rating` from supermarket;
+
+-- 9. Find the most profitable branch as per gross income ?
+select `branch` , sum(`gross income`) from supermarket 
+group by `branch`
+order by sum(`gross income`) desc;
+
+select `city`, `branch` , sum(`gross income`) from supermarket 
+group by `city`,`branch`
+order by sum(`gross income`) desc;
+
+-- 10. find the most used payment method city wise
+select `city`, `payment`, count(`payment`) from supermarket 
+group by `city` , `payment`
+order by count(`payment`) desc;
+
+-- 11. find the product line purchased in the highest quantity 
+select `product line` , sum(`quantity`) from supermarket
+group by `product line` 
+order by sum(`quantity`) desc;
+
+-- 12. display daily sales by day of the week
+update supermarket 
+SET `Date` = str_to_date(`Date`,'%m/%d/%Y');
+select dayofweek(`Date`) , dayname(`date`) , sum(`Total`) from supermarket 
+group by dayofweek(`date`) , dayname(`date`)
+order by sum(`total`) desc
+
+-- 13. find the month with the highest sales
+select monthname(`date`) as month , sum(`total`) from supermarket
+group by monthname(`date`)
+order by sum(`total`) desc
+
+-- 14. find the time at which sales are highest 
+select hour(`Time`) , sum(`Total`) from supermarket
+group by hour(`Time`)
+order by sum(`Total`) desc
+
+-- 15. which gender spends more on average
+select (`gender`) , round(avg(`gross income`),2)  from supermarket
+group by `gender`
+order by  round(avg(`gross income`),2) desc
+
+
+
+
